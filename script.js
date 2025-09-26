@@ -332,17 +332,17 @@ class DailyQuote {
             { text: "Seni düşünmek, bahar gelmek gibi gelir içime.", author: "Nazım Hikmet" },
             { text: "Aşk, hayatın en güzel melodisidir.", author: "Victor Hugo" },
             { text: "Seninle her gün, ilk gün gibi heyecanlı.", author: "Berkan" },
-            { text: "Aşkımız, zamanın ötesinde bir bağdır.", author: "Ela" },
+            { text: "Aşkımız, zamanın ötesinde bir bağdır.", author: "Berkan" },
             { text: "Seni sevmek, nefes almak kadar doğal.", author: "William Shakespeare" },
-            { text: "Kalbim seninle atıyor, zaman seninle akıyor.", author: "Berkan & Ela" },
+            { text: "Kalbim seninle atıyor, zaman seninle akıyor.", author: "Berkan " },
             { text: "Aşk, iki kalbin tek vücut olmasıdır.", author: "Aristoteles" },
             { text: "Seninle olmak, cennette yaşamak gibi.", author: "Rumi" },
             { text: "Aşkımız, yıldızlar kadar parlak, okyanuslar kadar derin.", author: "Berkan" },
-            { text: "Seni sevmek, bir şiir yazmak kadar güzel.", author: "Ela" },
+            { text: "Seni sevmek, bir şiir yazmak kadar güzel.", author: "Berkan" },
             { text: "Aşk, hayatın anlamıdır.", author: "Friedrich Nietzsche" },
-            { text: "Seninle her an, bir hazine gibi değerli.", author: "Berkan & Ela" },
+            { text: "Seninle her an, bir hazine gibi değerli.", author: "Berkan " },
             { text: "Aşk, iki kişinin birbirini tamamlamasıdır.", author: "Confucius" },
-            { text: "Seni düşünmek, en güzel düşüncemdir.", author: "Ela" },
+            { text: "Seni düşünmek, en güzel düşüncemdir.", author: "Berkan" },
             { text: "Aşkımız, zamanla değil, sonsuzlukla ölçülür.", author: "Berkan" }
         ];
         
