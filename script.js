@@ -313,11 +313,81 @@ class FullscreenModal {
     }
 }
 
+// Scroll animasyonları sınıfı
+class ScrollAnimations {
+    constructor() {
+        this.observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        this.init();
+    }
+    
+    init() {
+        // Intersection Observer oluştur
+        this.observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    this.animateElement(entry.target);
+                }
+            });
+        }, this.observerOptions);
+        
+        // Tüm animasyonlu elemanları gözlemle
+        this.observeElements();
+        
+        // Widget'ların giriş animasyonları
+        this.animateWidgets();
+    }
+    
+    observeElements() {
+        // Galeri elemanları
+        const galleryItems = document.querySelectorAll('.gallery-item');
+        galleryItems.forEach((item, index) => {
+            item.style.transitionDelay = `${index * 0.1}s`;
+            this.observer.observe(item);
+        });
+        
+        // Bölüm başlıkları
+        const sectionTitles = document.querySelectorAll('.section-title');
+        sectionTitles.forEach(title => {
+            this.observer.observe(title);
+        });
+        
+        // Widget'lar
+        const widgets = document.querySelectorAll('.love-counter-widget, .daily-quote-widget');
+        widgets.forEach(widget => {
+            this.observer.observe(widget);
+        });
+    }
+    
+    animateElement(element) {
+        if (element.classList.contains('gallery-item')) {
+            element.classList.add('visible');
+        } else if (element.classList.contains('section-title')) {
+            element.classList.add('fade-in');
+        } else if (element.classList.contains('daily-quote-widget')) {
+            element.classList.add('slide-in-right');
+        }
+    }
+    
+    animateWidgets() {
+        // Daily Quote widget'ı gecikmeli göster
+        setTimeout(() => {
+            const quoteWidget = document.querySelector('.daily-quote-widget');
+            if (quoteWidget && !quoteWidget.classList.contains('slide-in-right')) {
+                quoteWidget.classList.add('slide-in-right');
+            }
+        }, 500);
+    }
+}
+
 // Sayfa yüklendiğinde modal'ı başlat
 document.addEventListener('DOMContentLoaded', () => {
     window.fullscreenModal = new FullscreenModal();
     window.loveCounter = new LoveCounter();
     window.dailyQuote = new DailyQuote();
+    window.scrollAnimations = new ScrollAnimations();
 });
 
 // Günün Aşk Sözü Sınıfı
@@ -576,11 +646,20 @@ class LoveCounter {
         ];
         
         this.currentMessageIndex = 0;
+        this.previousValues = {
+            days: 0,
+            hours: 0,
+            minutes: 0,
+            seconds: 0
+        };
         
         this.init();
     }
     
     init() {
+        // Widget'ları animasyonlu göster
+        this.animateWidgetEntry();
+        
         this.updateCounter();
         
         // Her saniye güncelle
@@ -595,6 +674,21 @@ class LoveCounter {
         
         // İlk mesajı göster
         this.updateMessage();
+    }
+    
+    animateWidgetEntry() {
+        const widget = document.querySelector('.love-counter-widget');
+        if (widget) {
+            widget.classList.add('fade-in');
+        }
+        
+        // Sayaç elemanlarını sırayla göster
+        const counterItems = document.querySelectorAll('.counter-item');
+        counterItems.forEach((item, index) => {
+            setTimeout(() => {
+                item.classList.add('slide-in-up');
+            }, index * 150);
+        });
     }
     
     updateCounter() {
@@ -613,14 +707,43 @@ class LoveCounter {
         const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
         
-        // DOM'u güncelle
-        this.daysElement.textContent = this.formatNumber(days);
-        this.hoursElement.textContent = this.formatNumber(hours);
-        this.minutesElement.textContent = this.formatNumber(minutes);
-        this.secondsElement.textContent = this.formatNumber(seconds);
+        // Animasyonlu sayaç güncelleme
+        this.animateCounter(this.daysElement, days, this.previousValues.days);
+        this.animateCounter(this.hoursElement, hours, this.previousValues.hours);
+        this.animateCounter(this.minutesElement, minutes, this.previousValues.minutes);
+        this.animateCounter(this.secondsElement, seconds, this.previousValues.seconds);
+        
+        // Önceki değerleri güncelle
+        this.previousValues.days = days;
+        this.previousValues.hours = hours;
+        this.previousValues.minutes = minutes;
+        this.previousValues.seconds = seconds;
         
         // Özel günler için mesaj
         this.checkSpecialDays(days);
+    }
+    
+    animateCounter(element, newValue, oldValue) {
+        if (newValue !== oldValue) {
+            // Animasyon sınıfını ekle
+            element.classList.add('updating');
+            
+            // Değeri güncelle
+            element.textContent = this.formatNumber(newValue);
+            
+            // Animasyon sınıfını kaldır
+            setTimeout(() => {
+                element.classList.remove('updating');
+            }, 600);
+            
+            // Özel günlerde bounce animasyonu
+            if (newValue % 100 === 0 || newValue % 50 === 0) {
+                element.classList.add('bounce');
+                setTimeout(() => {
+                    element.classList.remove('bounce');
+                }, 1000);
+            }
+        }
     }
     
     formatNumber(num) {
@@ -672,3 +795,159 @@ class LoveCounter {
         }
     }
 }
+
+// Şifreli Hazine Sınıfı
+class TreasureBox {
+    constructor() {
+        this.correctPassword = 'servis'; // İpucu: Seni ilk öptüğüm yer
+        this.treasureLock = document.getElementById('treasureLock');
+        this.treasureContent = document.getElementById('treasureContent');
+        this.passwordInput = document.getElementById('treasurePassword');
+        this.unlockBtn = document.getElementById('unlockTreasure');
+        this.closeBtn = document.getElementById('closeTreasure');
+        this.treasureTabs = document.querySelectorAll('.treasure-tab');
+        this.tabPanes = document.querySelectorAll('.tab-pane');
+        
+        this.init();
+    }
+    
+    init() {
+        // Event listener'ları ekle
+        this.unlockBtn.addEventListener('click', () => this.unlockTreasure());
+        this.closeBtn.addEventListener('click', () => this.closeTreasure());
+        this.passwordInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                this.unlockTreasure();
+            }
+        });
+        
+        // Tab değiştirme event listener'ları
+        this.treasureTabs.forEach(tab => {
+            tab.addEventListener('click', () => this.switchTab(tab));
+        });
+        
+        // Animasyon için widget'ı görünür yap
+        setTimeout(() => {
+            document.querySelector('.treasure-widget').classList.add('visible');
+        }, 500);
+    }
+    
+    unlockTreasure() {
+        const enteredPassword = this.passwordInput.value.trim();
+        
+        if (enteredPassword === this.correctPassword) {
+            this.showSuccess();
+        } else {
+            this.showError();
+        }
+    }
+    
+    showSuccess() {
+        // Başarı animasyonu
+        this.treasureLock.style.transform = 'scale(0.9)';
+        this.treasureLock.style.opacity = '0';
+        
+        setTimeout(() => {
+            this.treasureLock.style.display = 'none';
+            this.treasureContent.style.display = 'block';
+            this.treasureContent.style.opacity = '0';
+            this.treasureContent.style.transform = 'scale(0.9)';
+            
+            // İçeriği animasyonla göster
+            setTimeout(() => {
+                this.treasureContent.style.opacity = '1';
+                this.treasureContent.style.transform = 'scale(1)';
+                this.createCelebration();
+            }, 100);
+        }, 300);
+        
+        // Şifre input'unu temizle
+        this.passwordInput.value = '';
+    }
+    
+    showError() {
+        // Hata animasyonu
+        this.passwordInput.classList.add('error');
+        this.passwordInput.style.animation = 'shake 0.5s ease-in-out';
+        
+        // Kilit ikonunu kırmızı yap
+        const lockIcon = document.querySelector('.lock-icon');
+        lockIcon.style.color = '#e74c3c';
+        lockIcon.style.animation = 'shake 0.5s ease-in-out';
+        
+        setTimeout(() => {
+            this.passwordInput.classList.remove('error');
+            this.passwordInput.style.animation = '';
+            lockIcon.style.color = '';
+            lockIcon.style.animation = '';
+        }, 500);
+        
+        // Şifre input'unu temizle
+        this.passwordInput.value = '';
+        this.passwordInput.focus();
+    }
+    
+    closeTreasure() {
+        // Kapatma animasyonu
+        this.treasureContent.style.opacity = '0';
+        this.treasureContent.style.transform = 'scale(0.9)';
+        
+        setTimeout(() => {
+            this.treasureContent.style.display = 'none';
+            this.treasureLock.style.display = 'block';
+            this.treasureLock.style.opacity = '1';
+            this.treasureLock.style.transform = 'scale(1)';
+        }, 300);
+    }
+    
+    switchTab(clickedTab) {
+        const targetTab = clickedTab.dataset.tab;
+        
+        // Aktif tab'ı güncelle
+        this.treasureTabs.forEach(tab => tab.classList.remove('active'));
+        clickedTab.classList.add('active');
+        
+        // İçerik panellerini güncelle
+        this.tabPanes.forEach(pane => {
+            pane.classList.remove('active');
+            if (pane.id === targetTab) {
+                pane.classList.add('active');
+            }
+        });
+    }
+    
+    createCelebration() {
+        // Başarı kutlaması için uçuşan kalpler
+        for (let i = 0; i < 20; i++) {
+            setTimeout(() => {
+                this.createCelebrationHeart();
+            }, i * 100);
+        }
+    }
+    
+    createCelebrationHeart() {
+        const heart = document.createElement('div');
+        heart.className = 'celebration-heart';
+        heart.innerHTML = '❤️';
+        heart.style.left = Math.random() * 100 + '%';
+        heart.style.animationDuration = (Math.random() * 2 + 2) + 's';
+        heart.style.fontSize = (Math.random() * 20 + 20) + 'px';
+        
+        document.querySelector('.treasure-widget').appendChild(heart);
+        
+        // Animasyon bittikten sonra kalbi kaldır
+        setTimeout(() => {
+            heart.remove();
+        }, 4000);
+    }
+}
+
+// Sayfa yüklendiğinde tüm sınıfları başlat
+document.addEventListener('DOMContentLoaded', () => {
+    new QuotesSlider();
+    new DailyQuote();
+    new FullscreenModal();
+    new LoveCounter();
+    new ScrollAnimations();
+    new TreasureBox(); // Şifreli hazineyi başlat
+});
