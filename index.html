@@ -50,6 +50,109 @@
         </div>
     </section>
 
+    <!-- Ela'ya Özel Şifreli Hazine -->
+    <section class="treasure-section">
+        <div class="treasure-widget">
+            <div class="treasure-header">
+                <div class="treasure-icon">🔐</div>
+                <h2 class="treasure-title">Ela'ya Özel Şifreli Hazine</h2>
+                <p class="treasure-subtitle">Sadece senin bildiğin sihirli kelimeyi gir...</p>
+            </div>
+            
+            <div class="treasure-lock" id="treasureLock">
+                <div class="lock-animation">
+                    <div class="treasure-box">📦</div>
+                    <div class="lock-icon">🔒</div>
+                </div>
+                <div class="password-input-container">
+                    <input type="password" id="treasurePassword" class="treasure-password" placeholder="Sihirli kelime..." maxlength="20">
+                    <button id="unlockTreasure" class="unlock-btn">Aç 🔓</button>
+                </div>
+                <div class="treasure-hint">
+                    <p>İpucu: Seni ilk öptüğüm yer... 💋</p>
+                </div>
+            </div>
+            
+            <div class="treasure-content" id="treasureContent" style="display: none;">
+                <div class="treasure-tabs">
+                    <button class="treasure-tab active" data-tab="letters">Mektuplar 💌</button>
+                    <button class="treasure-tab" data-tab="memories">Anılar 💭</button>
+                </div>
+                
+                <div class="treasure-tab-content">
+                    <!-- Mektuplar Sekmesi -->
+                    <div class="tab-pane active" id="letters">
+                        <div class="letter-container">
+                            <div class="letter">
+                                <div class="letter-header">
+                                    <h3>Sevgili Ela'm,</h3>
+                                    <span class="letter-date">21 Ocak 2025</span>
+                                </div>
+                                <div class="letter-body">
+                                    <p>Seni ilk öptüğüm  ve sevgili olduğumuz o gün, hayatımın en güzel günüydü. Gözlerin o kadar derindi ki, içinde kaybolmak istedim. Gülüşün, kalbimin en kuytularına ışık tuttu.</p>
+                                    <p>Her gün seninle daha da seviyorum. Seninle geçirdiğim her an, bir hazine gibi değerli. Seninle olmak, cennette yaşamak gibi...</p>
+                                    <p>Sen benim her şeyimsin. Seninle sonsuza dek...</p>
+                                </div>
+                                <div class="letter-footer">
+                                    <p>Seni sonsuza dek seven,</p>
+                                    <p>Berkan ❤️</p>
+                                </div>
+                            </div>
+                            
+                            <div class="letter">
+                                <div class="letter-header">
+                                    <h3>Aşkım Ela,</h3>
+                                    <span class="letter-date">14 Şubat 2025</span>
+                                </div>
+                                <div class="letter-body">
+                                    <p>Bugün Sevgililer Günü, ama benim için her gün seninle birlikteyken Sevgililer Günü. Senin sevgin, benim için en değerli hediye.</p>
+                                    <p>Seninle her anı paylaşmak, her hayali gerçekleştirmek istiyorum. Seninle büyümek, seninle öğrenmek, seninle hayatı keşfetmek...</p>
+                                    <p>Sen benim ilham kaynağımsın, benim gücüm, benim her şeyim.</p>
+                                </div>
+                                <div class="letter-footer">
+                                    <p>Seni her zaman seven,</p>
+                                    <p>Berkan ❤️</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
+                    <!-- Anılar Sekmesi -->
+                    <div class="tab-pane" id="memories">
+                        <div class="memory-timeline">
+                            <div class="memory-item">
+                                <div class="memory-date">21 Ocak 2025</div>
+                                <div class="memory-content">
+                                    <h4>İlk Sevgili Olduğumuz Gün</h4>
+                                    <p>Seni ilk kez öptüğüm  o an, hayatım değişti. O anı asla unutamam...</p>
+                                </div>
+                            </div>
+                            <div class="memory-item">
+                                <div class="memory-date">14 Şubat 2025</div>
+                                <div class="memory-content">
+                                    <h4>İlk Sevgililer Günü</h4>
+                                    <p>Seninle geçirdiğim ilk Sevgililer Günü, hayatımın en özel günüydü.</p>
+                                </div>
+                            </div>
+                            <div class="memory-item">
+                                <div class="memory-date">Her Gün</div>
+                                <div class="memory-content">
+                                    <h4>Seninle Her An</h4>
+                                    <p>Seninle geçirdiğim her an, bir hazine gibi saklıyorum kalbimde.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="treasure-actions">
+                    <button id="closeTreasure" class="treasure-close-btn">Hazineyi Kapat 🔐</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Günün Aşk Sözü Widget'ı -->
     <section class="daily-quote-section">
         <div class="daily-quote-widget">
