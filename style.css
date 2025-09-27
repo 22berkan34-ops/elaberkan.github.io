@@ -97,7 +97,181 @@ body {
     font-weight: 700;
 }
 
+/* Section Title Stilleri */
+.section-title {
+    font-family: 'Dancing Script', cursive;
+    font-size: 3rem;
+    color: #d63384;
+    text-align: center;
+    margin-bottom: 50px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s ease-out;
+}
+
+.section-title.fade-in {
+    opacity: 1;
+    transform: translateY(0);
+}
+
 /* Aşk Gün Sayacı Widget'ı */
+
+/* Sayaç animasyonları */
+.counter-number {
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-origin: center;
+    position: relative;
+    display: inline-block;
+}
+
+.counter-number.updating {
+    animation: numberFlip 0.6s ease-in-out;
+}
+
+@keyframes numberFlip {
+    0% {
+        transform: rotateX(0deg) scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: rotateX(90deg) scale(1.1);
+        opacity: 0.7;
+    }
+    100% {
+        transform: rotateX(0deg) scale(1);
+        opacity: 1;
+    }
+}
+
+/* Genel geçiş animasyonları */
+.fade-in {
+    animation: fadeIn 0.8s ease-out forwards;
+    opacity: 0;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.slide-in-left {
+    animation: slideInLeft 0.8s ease-out forwards;
+    opacity: 0;
+}
+
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.slide-in-right {
+    animation: slideInRight 0.8s ease-out forwards;
+    opacity: 0;
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.slide-in-up {
+    animation: slideInUp 0.8s ease-out forwards;
+    opacity: 0;
+}
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.slide-in-down {
+    animation: slideInDown 0.8s ease-out forwards;
+    opacity: 0;
+}
+
+@keyframes slideInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Pulse animasyonu */
+.pulse {
+    animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+/* Bounce animasyonu */
+.bounce {
+    animation: bounce 1s ease-in-out;
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-20px);
+    }
+    60% {
+        transform: translateY(-10px);
+    }
+}
+
+/* Shake animasyonu */
+.shake {
+    animation: shake 0.5s ease-in-out;
+}
+
+@keyframes shake {
+    0%, 100% {
+        transform: translateX(0);
+    }
+    10%, 30%, 50%, 70%, 90% {
+        transform: translateX(-5px);
+    }
+    20%, 40%, 60%, 80% {
+        transform: translateX(5px);
+    }
+}
 .love-counter-section {
     padding: 80px 20px;
     background: rgba(255, 255, 255, 0.4);
@@ -253,19 +427,48 @@ body {
     max-width: 1200px;
     margin: 0 auto;
 }
-
 .gallery-item {
     overflow: hidden;
     border-radius: 15px;
     box-shadow: 0 8px 25px rgba(214, 51, 132, 0.2);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    background: white;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
     padding: 10px;
+    opacity: 0;
+    transform: translateY(50px);
+}
+
+.gallery-item.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.gallery-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transform: translateX(-100%);
+    transition: transform 0.6s ease;
+    pointer-events: none;
+}
+
+.gallery-item:hover::before {
+    transform: translateX(100%);
 }
 
 .gallery-item:hover {
-    transform: scale(1.05);
-    box-shadow: 0 12px 35px rgba(214, 51, 132, 0.3);
+    transform: scale(1.08) translateY(-5px);
+    box-shadow: 0 15px 40px rgba(214, 51, 132, 0.4);
+    z-index: 10;
+}
+
+.gallery-item:hover img {
+    transform: scale(1.15) rotate(1deg);
+    filter: brightness(1.1) contrast(1.05);
 }
 
 .gallery-item img {
@@ -273,12 +476,10 @@ body {
     height: 250px;
     object-fit: cover;
     border-radius: 10px;
-    transition: transform 0.3s ease;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    filter: brightness(0.95);
 }
 
-.gallery-item:hover img {
-    transform: scale(1.1);
-}
 
 /* Aşk Sözleri Bölümü */
 .quotes-section {
@@ -653,60 +854,21 @@ body {
 .daily-quote-widget {
     max-width: 800px;
     margin: 0 auto;
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 182, 193, 0.9) 100%);
-    border-radius: 30px;
-    padding: 40px 30px;
-    box-shadow: 0 15px 35px rgba(214, 51, 132, 0.2);
-    border: 2px solid rgba(214, 51, 132, 0.3);
-    position: relative;
-    overflow: hidden;
-    transition: transform 0.3s ease;
-}
-
-.daily-quote-widget:hover {
-    transform: translateY(-5px);
-}
-
-.daily-quote-widget::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle, rgba(255, 105, 180, 0.1) 0%, transparent 70%);
-    animation: rotate 25s linear infinite;
-}
-
-.quote-header {
-    margin-bottom: 30px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 15px;
-    position: relative;
-    z-index: 1;
-}
-
-.quote-title {
-    font-family: 'Dancing Script', cursive;
-    font-size: 2.5rem;
-    color: #d63384;
-    font-weight: 700;
-    margin: 0;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.quote-date {
-    font-family: 'Playfair Display', serif;
-    font-size: 1rem;
-    color: #8b0000;
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(15px);
     font-style: italic;
     background: rgba(214, 51, 132, 0.1);
     padding: 8px 20px;
     border-radius: 25px;
     border: 1px solid rgba(214, 51, 132, 0.2);
+    opacity: 0;
+    transform: translateX(50px);
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.daily-quote-widget.slide-in-right {
+    opacity: 1;
+    transform: translateX(0);
 }
 
 .quote-content {
@@ -868,4 +1030,602 @@ body {
         padding: 10px 20px;
         font-size: 0.9rem;
     }
+}
+
+/* Şifreli Hazine Stilleri */
+.treasure-section {
+    padding: 80px 0;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.treasure-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="2" fill="rgba(255,255,255,0.1)"/><circle cx="80" cy="80" r="2" fill="rgba(255,255,255,0.1)"/><circle cx="50" cy="50" r="1" fill="rgba(255,255,255,0.1)"/></svg>');
+    animation: floatStars 20s linear infinite;
+}
+
+@keyframes floatStars {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-100px); }
+}
+
+.treasure-widget {
+    max-width: 900px;
+    margin: 0 auto;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border-radius: 25px;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+    padding: 40px;
+    position: relative;
+    z-index: 1;
+    opacity: 0;
+    transform: translateY(50px);
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.treasure-widget.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.treasure-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.treasure-icon {
+    font-size: 4rem;
+    margin-bottom: 20px;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+.treasure-title {
+    font-family: 'Dancing Script', cursive;
+    font-size: 3rem;
+    color: #764ba2;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.treasure-subtitle {
+    font-size: 1.2rem;
+    color: #666;
+    font-style: italic;
+}
+
+.treasure-lock {
+    text-align: center;
+    padding: 40px;
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    border-radius: 20px;
+    margin-bottom: 30px;
+    position: relative;
+    overflow: hidden;
+}
+
+.treasure-lock::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    animation: shimmer 3s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+    0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+    100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+}
+
+.lock-animation {
+    margin-bottom: 30px;
+}
+
+.treasure-box {
+    font-size: 5rem;
+    display: inline-block;
+    animation: treasureFloat 3s ease-in-out infinite;
+}
+
+.lock-icon {
+    font-size: 3rem;
+    margin-left: 20px;
+    display: inline-block;
+    animation: lockShake 2s ease-in-out infinite;
+}
+
+@keyframes treasureFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+@keyframes lockShake {
+    0%, 100% { transform: rotate(0deg); }
+    25% { transform: rotate(-5deg); }
+    75% { transform: rotate(5deg); }
+}
+
+.password-input-container {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.treasure-password {
+    padding: 15px 20px;
+    font-size: 1.2rem;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 15px;
+    background: rgba(255, 255, 255, 0.2);
+    color: #333;
+    text-align: center;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+    min-width: 250px;
+}
+
+.treasure-password:focus {
+    outline: none;
+    border-color: #fff;
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.05);
+}
+
+.treasure-password::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.unlock-btn {
+    padding: 15px 30px;
+    font-size: 1.2rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.unlock-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+.unlock-btn:active {
+    transform: translateY(0);
+}
+
+.treasure-hint {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1rem;
+    font-style: italic;
+}
+
+.treasure-content {
+    background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+    border-radius: 20px;
+    padding: 30px;
+    animation: treasureReveal 1s ease-out;
+}
+
+@keyframes treasureReveal {
+    0% {
+        opacity: 0;
+        transform: scale(0.8) rotateY(90deg);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1) rotateY(0deg);
+    }
+}
+
+.treasure-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+}
+
+.treasure-tab {
+    padding: 12px 25px;
+    background: rgba(255, 255, 255, 0.3);
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 1rem;
+    color: #333;
+    backdrop-filter: blur(10px);
+}
+
+.treasure-tab:hover {
+    background: rgba(255, 255, 255, 0.5);
+    transform: translateY(-2px);
+}
+
+.treasure-tab.active {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.tab-pane {
+    display: none;
+    animation: fadeIn 0.5s ease-out;
+}
+
+.tab-pane.active {
+    display: block;
+}
+
+/* Mektuplar Stilleri */
+.letter-container {
+    display: grid;
+    gap: 30px;
+    max-height: 400px;
+    overflow-y: auto;
+    padding: 10px;
+}
+
+.letter {
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    border-left: 5px solid #764ba2;
+    transition: all 0.3s ease;
+}
+
+.letter:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+}
+
+.letter-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid rgba(118, 75, 162, 0.2);
+}
+
+.letter-header h3 {
+    font-family: 'Dancing Script', cursive;
+    font-size: 1.8rem;
+    color: #764ba2;
+    margin: 0;
+}
+
+.letter-date {
+    color: #666;
+    font-style: italic;
+    font-size: 0.9rem;
+}
+
+.letter-body {
+    line-height: 1.8;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.letter-body p {
+    margin-bottom: 15px;
+}
+
+.letter-footer {
+    text-align: right;
+    color: #764ba2;
+    font-style: italic;
+}
+
+/* Özel Fotoğraflar Stilleri */
+.private-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.private-photo-item {
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 15px;
+    padding: 20px;
+    text-align: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.private-photo-item:hover {
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.photo-frame {
+    font-size: 4rem;
+    margin-bottom: 15px;
+    animation: photoGlow 2s ease-in-out infinite;
+}
+
+@keyframes photoGlow {
+    0%, 100% { filter: brightness(1); }
+    50% { filter: brightness(1.2) drop-shadow(0 0 10px rgba(118, 75, 162, 0.5)); }
+}
+
+.photo-caption {
+    font-size: 1rem;
+    color: #333;
+    font-style: italic;
+}
+
+/* Anılar Stilleri */
+.memory-timeline {
+    position: relative;
+    padding-left: 30px;
+}
+
+.memory-timeline::before {
+    content: '';
+    position: absolute;
+    left: 15px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, #667eea, #764ba2);
+}
+
+.memory-item {
+    position: relative;
+    margin-bottom: 30px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.memory-item::before {
+    content: '';
+    position: absolute;
+    left: -37px;
+    top: 20px;
+    width: 12px;
+    height: 12px;
+    background: #764ba2;
+    border-radius: 50%;
+    box-shadow: 0 0 0 4px rgba(118, 75, 162, 0.2);
+}
+
+.memory-item:hover {
+    transform: translateX(5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+.memory-date {
+    font-weight: bold;
+    color: #764ba2;
+    margin-bottom: 10px;
+    font-size: 1.1rem;
+}
+
+.memory-content h4 {
+    color: #333;
+    margin-bottom: 10px;
+    font-size: 1.3rem;
+}
+
+.memory-content p {
+    color: #666;
+    line-height: 1.6;
+}
+
+.treasure-actions {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.treasure-close-btn {
+    padding: 15px 30px;
+    font-size: 1.1rem;
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    color: white;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.treasure-close-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+/* Responsive için şifreli hazine */
+@media (max-width: 768px) {
+    .treasure-widget {
+        padding: 30px 20px;
+        margin: 0 15px;
+    }
+    
+    .treasure-title {
+        font-size: 2.5rem;
+    }
+    
+    .treasure-icon {
+        font-size: 3rem;
+    }
+    
+    .treasure-box {
+        font-size: 4rem;
+    }
+    
+    .lock-icon {
+        font-size: 2.5rem;
+    }
+    
+    .password-input-container {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .treasure-password {
+        min-width: 100%;
+    }
+    
+    .unlock-btn {
+        width: 100%;
+    }
+    
+    .treasure-tabs {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .treasure-tab {
+        width: 100%;
+        max-width: 200px;
+    }
+    
+    .private-gallery {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    }
+}
+
+@media (max-width: 480px) {
+    .treasure-widget {
+        padding: 20px 15px;
+        margin: 0 10px;
+    }
+    
+    .treasure-title {
+        font-size: 2rem;
+    }
+    
+    .treasure-subtitle {
+        font-size: 1rem;
+    }
+    
+    .treasure-icon {
+        font-size: 2.5rem;
+    }
+    
+    .treasure-box {
+        font-size: 3rem;
+    }
+    
+    .lock-icon {
+        font-size: 2rem;
+    }
+    
+    .treasure-lock {
+        padding: 30px 20px;
+    }
+    
+    .treasure-content {
+        padding: 20px 15px;
+    }
+    
+    .letter {
+        padding: 20px 15px;
+    }
+    
+    .letter-header h3 {
+        font-size: 1.5rem;
+    }
+    
+    .private-gallery {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Şifreli Hazine Animasyonları */
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+    20%, 40%, 60%, 80% { transform: translateX(5px); }
+}
+
+@keyframes treasureGlow {
+    0%, 100% { box-shadow: 0 0 20px rgba(118, 75, 162, 0.3); }
+    50% { box-shadow: 0 0 40px rgba(118, 75, 162, 0.6); }
+}
+
+@keyframes lockPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+@keyframes celebrationFloat {
+    0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-200px) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+/* Hata durumu için input stili */
+.treasure-password.error {
+    border-color: #e74c3c !important;
+    background-color: rgba(231, 76, 60, 0.1) !important;
+}
+
+/* Kutlama kalpleri */
+.celebration-heart {
+    position: absolute;
+    color: #e74c3c;
+    pointer-events: none;
+    z-index: 1000;
+    animation: celebrationFloat 4s ease-out forwards;
+    user-select: none;
+}
+
+/* Hazine widget'ı için ek animasyonlar */
+.treasure-widget {
+    animation: treasureGlow 3s ease-in-out infinite;
+}
+
+.lock-icon {
+    animation: lockPulse 2s ease-in-out infinite;
+}
+
+/* Başarı animasyonu için geçişler */
+.treasure-lock {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.treasure-content {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Tab geçiş animasyonları */
+.tab-pane {
+    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+.tab-pane.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.tab-pane:not(.active) {
+    opacity: 0;
+    transform: translateY(20px);
+    display: none;
 }
