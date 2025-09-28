@@ -265,25 +265,56 @@
         <h2 class="section-title">Aşk Sözleri</h2>
         <div class="quotes-slider">
             <div class="quote active">
-                <p>"Seninle her an bir ömür..."</p>
+                <p>"Seni sevdim, seni seveceğim, seni sevdim..."</p>
+                <span class="quote-author">- Cahit Zarifoğlu</span>
             </div>
             <div class="quote">
-                <p>"Ela, sen benim kalbimin tek sahibisin."</p>
+                <p>"Aşk, iki kişinin birbirine bakması değil, birlikte aynı yöne bakmasıdır."</p>
+                <span class="quote-author">- Antoine de Saint-Exupéry</span>
             </div>
             <div class="quote">
-                <p>"Berkan, seninle hayat daha anlamlı..."</p>
+                <p>"Seni sevmek, bir mevsim gibi doğdu içimde."</p>
+                <span class="quote-author">- Can Yücel</span>
             </div>
             <div class="quote">
-                <p>"Aşkımız zamanla değil, kalplerle ölçülür."</p>
+                <p>"Aşkımız, zamanla değil, sonsuzlukla ölçülür."</p>
+                <span class="quote-author">- Berkan</span>
             </div>
-            <div class="quote">
-                <p>"Sen benim ilk ve son aşkımsın."</p>
+        </div>
+    </section>
+
+    <!-- Alfabetik Date Takvimi -->
+    <section class="calendar-section">
+        <div class="calendar-widget">
+            <div class="calendar-header">
+                <div class="calendar-icon">📅</div>
+                <h2 class="calendar-title">Alfabetik Date Takvimi</h2>
+                <p class="calendar-subtitle">Yapılanlara kalp, yapılmayanlara boşluk</p>
+            </div>
+            
+            <div class="calendar-grid" id="calendarGrid">
+                <!-- Takvim içeriği JavaScript ile doldurulacak -->
+            </div>
+            
+            <div class="calendar-stats">
+                <div class="stat-item">
+                    <span class="stat-number" id="completedCount">0</span>
+                    <span class="stat-label">Tamamlandı</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" id="pendingCount">0</span>
+                    <span class="stat-label">Bekliyor</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" id="totalCount">0</span>
+                    <span class="stat-label">Toplam</span>
+                </div>
             </div>
         </div>
     </section>
 
     <!-- Tam Ekran Modal -->
-    <div class="fullscreen-modal" id="fullscreenModal">
+    <div id="fullscreenModal" class="fullscreen-modal">
         <div class="modal-content">
             <span class="close-modal" id="closeModal">&times;</span>
             <img src="" alt="Tam Ekran Resim" id="modalImage">
