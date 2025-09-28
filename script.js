@@ -74,25 +74,10 @@ class QuotesSlider {
 }
 
 // Sayfa yüklendiğinde slaytı başlat
-document.addEventListener('DOMContentLoaded', () => {
-    new QuotesSlider();
-});
+// QuotesSlider daha sonra ana DOMContentLoaded event'inde başlatılacak
 
 // Galeri hover efektleri için ek animasyonlar
-document.addEventListener('DOMContentLoaded', () => {
-    const galleryItems = document.querySelectorAll('.gallery-item');
-    
-    galleryItems.forEach(item => {
-        item.addEventListener('mouseenter', () => {
-            // Hover olduğunda ekstra uçuşan kalp oluştur
-            for (let i = 0; i < 2; i++) {
-                setTimeout(() => {
-                    createFloatingHeart();
-                }, i * 100);
-            }
-        });
-    });
-});
+// Hover efektleri daha sonra ana DOMContentLoaded event'inde eklenecek
 
 // Sayfa scroll olduğunda ekstra kalpler oluştur
 let scrollTimeout;
@@ -148,9 +133,7 @@ function handleSwipe() {
 }
 
 // QuotesSlider'ı global yaparak klavye ve swipe kontrollerine erişim sağla
-document.addEventListener('DOMContentLoaded', () => {
-    window.quotesSlider = new QuotesSlider();
-});
+// Global atama daha sonra ana DOMContentLoaded event'inde yapılacak
 
 // Sayfa aktivitesi olduğunda ekstra kalpler oluştur
 document.addEventListener('click', (e) => {
@@ -191,42 +174,63 @@ class FullscreenModal {
         this.galleryImages = document.querySelectorAll('.gallery-item img');
         this.currentImageIndex = 0;
         
+        // Elementlerin varlığını kontrol et
+        if (!this.modal || !this.modalImage || !this.closeBtn || !this.prevBtn || !this.nextBtn) {
+            console.error('FullscreenModal elementleri bulunamadı:');
+            console.error('modal:', this.modal);
+            console.error('modalImage:', this.modalImage);
+            console.error('closeBtn:', this.closeBtn);
+            console.error('prevBtn:', this.prevBtn);
+            console.error('nextBtn:', this.nextBtn);
+            return; // Elementler yoksa init'i çalıştırma
+        }
+        
         this.init();
     }
     
     init() {
         // Galeri resimlerine tıklama olayı ekle
-        this.galleryImages.forEach((img, index) => {
-            img.style.cursor = 'pointer';
-            img.addEventListener('click', () => {
-                this.openModal(index);
+        if (this.galleryImages && this.galleryImages.length > 0) {
+            this.galleryImages.forEach((img, index) => {
+                img.style.cursor = 'pointer';
+                img.addEventListener('click', () => {
+                    this.openModal(index);
+                });
             });
-        });
+        }
         
         // Modal kapatma olayları
-        this.closeBtn.addEventListener('click', () => {
-            this.closeModal();
-        });
+        if (this.closeBtn) {
+            this.closeBtn.addEventListener('click', () => {
+                this.closeModal();
+            });
+        }
         
         // Modal dışına tıklayınca kapat
-        this.modal.addEventListener('click', (e) => {
-            if (e.target === this.modal) {
-                this.closeModal();
-            }
-        });
+        if (this.modal) {
+            this.modal.addEventListener('click', (e) => {
+                if (e.target === this.modal) {
+                    this.closeModal();
+                }
+            });
+        }
         
         // Navigasyon butonları
-        this.prevBtn.addEventListener('click', () => {
-            this.showPreviousImage();
-        });
+        if (this.prevBtn) {
+            this.prevBtn.addEventListener('click', () => {
+                this.showPreviousImage();
+            });
+        }
         
-        this.nextBtn.addEventListener('click', () => {
-            this.showNextImage();
-        });
+        if (this.nextBtn) {
+            this.nextBtn.addEventListener('click', () => {
+                this.showNextImage();
+            });
+        }
         
         // Klavye kontrolleri
         document.addEventListener('keydown', (e) => {
-            if (this.modal.classList.contains('active')) {
+            if (this.modal && this.modal.classList.contains('active')) {
                 if (e.key === 'Escape') {
                     this.closeModal();
                 } else if (e.key === 'ArrowLeft') {
@@ -242,11 +246,20 @@ class FullscreenModal {
     }
     
     openModal(index) {
+        if (!this.galleryImages || this.galleryImages.length === 0) {
+            console.warn('Galeri resimleri bulunamadı');
+            return;
+        }
+        
         this.currentImageIndex = index;
         const image = this.galleryImages[index];
-        this.modalImage.src = image.src;
-        this.modalImage.alt = image.alt;
-        this.modal.classList.add('active');
+        if (this.modalImage && image) {
+            this.modalImage.src = image.src;
+            this.modalImage.alt = image.alt;
+        }
+        if (this.modal) {
+            this.modal.classList.add('active');
+        }
         document.body.style.overflow = 'hidden'; // Scroll'u engelle
         
         // Modal açıldığında uçuşan kalpler oluştur
@@ -258,32 +271,36 @@ class FullscreenModal {
     }
     
     closeModal() {
-        this.modal.classList.remove('active');
+        if (this.modal) {
+            this.modal.classList.remove('active');
+        }
         document.body.style.overflow = 'auto'; // Scroll'u tekrar aktif et
     }
     
     showPreviousImage() {
+        if (!this.galleryImages || this.galleryImages.length === 0) return;
         this.currentImageIndex = (this.currentImageIndex - 1 + this.galleryImages.length) % this.galleryImages.length;
         this.updateModalImage();
     }
     
     showNextImage() {
+        if (!this.galleryImages || this.galleryImages.length === 0) return;
         this.currentImageIndex = (this.currentImageIndex + 1) % this.galleryImages.length;
         this.updateModalImage();
     }
     
     updateModalImage() {
+        if (!this.galleryImages || this.galleryImages.length === 0) return;
         const image = this.galleryImages[this.currentImageIndex];
-        this.modalImage.style.opacity = '0';
-        
-        setTimeout(() => {
+        if (this.modalImage && image) {
             this.modalImage.src = image.src;
             this.modalImage.alt = image.alt;
-            this.modalImage.style.opacity = '1';
-        }, 150);
+        }
     }
     
     initSwipeSupport() {
+        if (!this.modal) return;
+        
         let touchStartX = 0;
         let touchEndX = 0;
         
@@ -383,12 +400,7 @@ class ScrollAnimations {
 }
 
 // Sayfa yüklendiğinde modal'ı başlat
-document.addEventListener('DOMContentLoaded', () => {
-    window.fullscreenModal = new FullscreenModal();
-    window.loveCounter = new LoveCounter();
-    window.dailyQuote = new DailyQuote();
-    window.scrollAnimations = new ScrollAnimations();
-});
+// Tüm sınıflar daha sonra ana DOMContentLoaded event'inde başlatılacak
 
 // Günün Aşk Sözü Sınıfı
 class DailyQuote {
@@ -942,12 +954,217 @@ class TreasureBox {
     }
 }
 
+// Alfabetik Date Takvimi Sınıfı
+class AlphabeticalDateCalendar {
+    constructor() {
+        this.alphabeticalDates = this.generateAlphabeticalDates();
+        this.completedDates = JSON.parse(localStorage.getItem('completedDates')) || {};
+        
+        this.calendarGrid = document.getElementById('calendarGrid');
+        this.currentMonthElement = document.getElementById('currentMonth'); // Opsiyonel
+        this.completedCountElement = document.getElementById('completedCount');
+        this.pendingCountElement = document.getElementById('pendingCount');
+        this.totalCountElement = document.getElementById('totalCount');
+        
+        // Elementlerin varlığını kontrol et
+        if (!this.calendarGrid) {
+            console.error('calendarGrid elementi bulunamadı');
+            return;
+        }
+        
+        this.init();
+    }
+    
+    init() {
+        this.renderCalendar();
+        this.updateStats();
+        this.addEventListeners();
+    }
+    
+    generateAlphabeticalDates() {
+        const dates = [];
+        const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        
+        // Her harf için bir date fikri
+        const letterDates = [
+            { letter: 'A', name: 'Araba Yıkamak 🚗', description: 'Birlikte araba yıkamak' },
+            { letter: 'B', name: 'Bowling Oynamak ', description: 'Bowling oynamak' },
+            { letter: 'C', name: 'Cilt bakımı yapmak ', description: 'Cilt bakımı yapmak' },
+            { letter: 'Ç', name: 'Çarpışan Arabaya Binmek  ', description: 'Birlikte Çarpışan Arabaya Binmek' },
+            { letter: 'D', name: 'Dondurma yemek', description: 'Birlikte Dondurma Yemek' },
+            { letter: 'E', name: 'Eğlence Parkı 🎉', description: 'Lunaparkta eğlenmek' },
+            { letter: 'F', name: 'Film İzlemek', description: 'Birlikte Film İzlemek' },
+            { letter: 'G', name: 'Galataya Gitmek', description: 'Birlikte Galataya Gitmek' },
+            { letter: 'H', name: 'Hamakta Sallanmak', description: 'Birlikte Hamakta Sallanmak' },
+            { letter: 'I', name: 'Islak Saçlarımızı Taramak', description: 'Islak Saçlarımızı Taramak' },
+            { letter: 'İ', name: 'ice Cream Macchiato İçmek', description: 'ice Cream Macchiato İçmek' },
+            { letter: 'K', name: 'Kahvaltı', description: 'Birlikte Kahvaltı Yapmak' },
+            { letter: 'L', name: 'Lego Yapmak', description: 'Birlikte Lego Yapmak' },
+            { letter: 'M', name: 'Müzeye Gitmek', description: 'Birlikte Müzeye Gitmek' },
+            { letter: 'N', name: 'Nehir Kenarında Dolaşmak', description: 'Birlikte Nehir Kenarında Dolaşmak' },
+            { letter: 'O', name: 'Okey Oynamak ', description: 'Birlikte Okey Oynamak' },
+            { letter: 'Ö', name: 'Özel Soslu Hatay Döneri Yemek', description: 'Birlikte Özel Soslu Hatay Döneri Yemek' },
+            { letter: 'P', name: 'Piknik', description: 'Yeşillikte piknik yapmak' },
+            { letter: 'R', name: 'Resim Yapmak', description: 'Birlikte Resim Yapmak' },
+            { letter: 'S', name: 'Sinemaya Gitmek', description: 'Birlikte Sinemaya Gitmek' },
+            { letter: 'Ş', name: 'Şehir Turu Yapmak', description: 'Birlikte Şehir Turu Yapmak' },
+            { letter: 'T', name: 'Tavuklu Pilav Yemek ', description: 'Birlikte Tavuklu Pilav Yemek' },
+            { letter: 'U', name: 'Uçurtma Uçurmak', description: 'Gökyüzünde uçurtma uçurmak' },
+            { letter: 'Ü', name: 'Ünlü Bulmaca Çözmek', description: 'Birlikte Ünlü Bulmaca Çözmek' },
+            { letter: 'V', name: 'Voleybol Oynamak', description: 'Birlikte Voleybol Oynamak' },
+            { letter: 'Y', name: 'Yağmurda Islanmak', description: 'Birlikte Yağmurda Islanmak' },
+            { letter: 'Z', name: 'Zeytinyağlı Yaprak Sarma Yemek', description: 'Birlikte Zeytinyağlı Yaprak Sarma Yemek' }
+        ];
+        
+        letterDates.forEach((letterDate, index) => {
+            dates.push({
+                letter: letterDate.letter,
+                name: letterDate.name,
+                description: letterDate.description,
+                id: `letter-${letterDate.letter}`,
+                order: index
+            });
+        });
+        
+        return dates;
+    }
+    
+    renderCalendar() {
+        // Tüm harfleri göster (artık ay bazlı değil)
+        if (this.currentMonthElement) {
+            this.currentMonthElement.textContent = 'Alfabetik Date Listesi';
+        }
+        
+        if (this.calendarGrid) {
+            this.calendarGrid.innerHTML = '';
+            
+            this.alphabeticalDates.forEach(letterDate => {
+                const dateElement = this.createDateElement(letterDate);
+                this.calendarGrid.appendChild(dateElement);
+            });
+        }
+    }
+    createDateElement(dateObj) {
+        const dateDiv = document.createElement('div');
+        dateDiv.className = 'calendar-item';
+        dateDiv.dataset.dateId = dateObj.id;
+        
+        const isCompleted = this.completedDates[dateObj.id];
+        if (isCompleted) {
+            dateDiv.classList.add('completed');
+        }
+        
+        dateDiv.innerHTML = `
+            <div class="date-label">Harf ${dateObj.letter}</div>
+            <div class="date-status">${isCompleted ? '❤️' : '♡'}</div>
+            <div class="date-name">${dateObj.name}</div>
+            <div class="date-description">${dateObj.description}</div>
+        `;
+        
+        dateDiv.addEventListener('click', () => this.toggleDateCompletion(dateObj.id));
+        
+        return dateDiv;
+    }
+    
+    toggleDateCompletion(dateId) {
+        this.completedDates[dateId] = !this.completedDates[dateId];
+        
+        // LocalStorage'a kaydet
+        localStorage.setItem('completedDates', JSON.stringify(this.completedDates));
+        
+        // Takvimi yeniden render et
+        this.renderCalendar();
+        this.updateStats();
+        
+        // Animasyon için kalp oluştur
+        if (this.completedDates[dateId]) {
+            this.createCelebrationHearts(3);
+        }
+    }
+    
+    createCelebrationHearts(count) {
+        for (let i = 0; i < count; i++) {
+            setTimeout(() => {
+                createFloatingHeart();
+            }, i * 100);
+        }
+    }
+    
+    updateStats() {
+        const totalDates = this.alphabeticalDates.length;
+        const completedDates = Object.keys(this.completedDates).filter(key => this.completedDates[key]).length;
+        const pendingDates = totalDates - completedDates;
+        
+        // Elementlerin varlığını kontrol et
+        if (this.completedCountElement) {
+            this.completedCountElement.textContent = completedDates;
+            this.animateNumber(this.completedCountElement, completedDates);
+        }
+        
+        if (this.pendingCountElement) {
+            this.pendingCountElement.textContent = pendingDates;
+            this.animateNumber(this.pendingCountElement, pendingDates);
+        }
+        
+        if (this.totalCountElement) {
+            this.totalCountElement.textContent = totalDates;
+            this.animateNumber(this.totalCountElement, totalDates);
+        }
+    }
+    
+    animateNumber(element, targetNumber) {
+        if (!element) return;
+        
+        const currentNumber = parseInt(element.textContent) || 0;
+        const increment = targetNumber > currentNumber ? 1 : -1;
+        const steps = Math.abs(targetNumber - currentNumber);
+        
+        if (steps === 0) return;
+        
+        let step = 0;
+        const timer = setInterval(() => {
+            step++;
+            const newNumber = currentNumber + (increment * step);
+            element.textContent = newNumber;
+            
+            if (step >= steps) {
+                clearInterval(timer);
+                element.textContent = targetNumber;
+            }
+        }, 50);
+    }
+    
+    addEventListeners() {
+        // Harf bazlı takvimde ay navigasyonu gerekmiyor
+        // Sadece click olayları createDateElement içinde handle ediliyor
+    }
+}
+
 // Sayfa yüklendiğinde tüm sınıfları başlat
 document.addEventListener('DOMContentLoaded', () => {
-    new QuotesSlider();
-    new DailyQuote();
-    new FullscreenModal();
-    new LoveCounter();
-    new ScrollAnimations();
-    new TreasureBox(); // Şifreli hazineyi başlat
+    const quotesSlider = new QuotesSlider();
+    const dailyQuote = new DailyQuote();
+    const fullscreenModal = new FullscreenModal();
+    const loveCounter = new LoveCounter();
+    const scrollAnimations = new ScrollAnimations();
+    const treasureBox = new TreasureBox();
+    const alphabeticalDateCalendar = new AlphabeticalDateCalendar();
+    
+    // Global referanslar için
+    window.quotesSlider = quotesSlider;
+    window.fullscreenModal = fullscreenModal;
+    window.loveCounter = loveCounter;
+    window.dailyQuote = dailyQuote;
+    
+    // Galeri hover efektleri
+    const galleryItems = document.querySelectorAll('.gallery-item');
+    galleryItems.forEach(item => {
+        item.addEventListener('mouseenter', () => {
+            for (let i = 0; i < 2; i++) {
+                setTimeout(() => {
+                    createFloatingHeart();
+                }, i * 100);
+            }
+        });
+    });
 });
