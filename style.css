@@ -1912,8 +1912,283 @@ body {
     transform: translateY(0);
 }
 
-.tab-pane:not(.active) {
-    opacity: 0;
-    transform: translateY(20px);
-    display: none;
+/* Alfabetik Yemek Yeme Takvimi Stilleri */
+.food-calendar-section {
+    padding: 80px 20px;
+    background: rgba(255, 248, 220, 0.4);
+    backdrop-filter: blur(10px);
+    position: relative;
+    z-index: 2;
+}
+
+.food-calendar-widget {
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: center;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 218, 185, 0.8) 100%);
+    border-radius: 30px;
+    padding: 40px 30px;
+    box-shadow: 0 15px 35px rgba(255, 140, 0, 0.2);
+    border: 2px solid rgba(255, 140, 0, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.food-calendar-widget::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 165, 0, 0.1) 0%, transparent 70%);
+    animation: rotate 20s linear infinite;
+}
+
+.food-calendar-header {
+    margin-bottom: 30px;
+    position: relative;
+    z-index: 1;
+}
+
+.food-calendar-icon {
+    font-size: 4rem;
+    margin-bottom: 20px;
+    animation: foodBounce 2s ease-in-out infinite;
+}
+
+@keyframes foodBounce {
+    0%, 100% {
+        transform: scale(1) rotate(0deg);
+    }
+    50% {
+        transform: scale(1.1) rotate(5deg);
+    }
+}
+
+.food-calendar-title {
+    font-family: 'Dancing Script', cursive;
+    font-size: 3rem;
+    color: #ff8c00;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.food-calendar-subtitle {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    color: #d63384;
+    font-weight: 600;
+    opacity: 0.8;
+}
+
+.food-calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin: 30px 0;
+    position: relative;
+    z-index: 1;
+}
+
+.food-calendar-item {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 235, 205, 0.9) 100%);
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 8px 25px rgba(255, 140, 0, 0.2);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    border: 2px solid rgba(255, 140, 0, 0.2);
+    position: relative;
+    overflow: hidden;
+}
+
+.food-calendar-item:hover {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 12px 35px rgba(255, 140, 0, 0.3);
+}
+
+.food-calendar-item.completed {
+    background: linear-gradient(135deg, rgba(255, 182, 193, 0.9) 0%, rgba(255, 105, 180, 0.8) 100%);
+    border-color: #ff69b4;
+    animation: completedPulse 2s ease-in-out infinite;
+}
+
+@keyframes completedPulse {
+    0%, 100% {
+        box-shadow: 0 8px 25px rgba(255, 140, 0, 0.2);
+    }
+    50% {
+        box-shadow: 0 12px 35px rgba(255, 140, 0, 0.4), 0 0 20px rgba(255, 105, 180, 0.3);
+    }
+}
+
+.food-calendar-item .food-letter {
+    font-family: 'Dancing Script', cursive;
+    font-size: 2rem;
+    font-weight: 700;
+    color: #ff8c00;
+    margin-bottom: 10px;
+}
+
+.food-calendar-item.completed .food-letter {
+    color: #ff1493;
+}
+
+.food-calendar-item .food-status {
+    font-size: 2rem;
+    margin: 10px 0;
+    transition: all 0.3s ease;
+}
+
+.food-calendar-item .food-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+.food-calendar-item.completed .food-name {
+    color: #8b0000;
+}
+
+.food-calendar-item .food-description {
+    font-size: 0.9rem;
+    color: #666;
+    line-height: 1.4;
+}
+
+.food-calendar-item.completed .food-description {
+    color: #8b0000;
+    font-style: italic;
+}
+
+.food-calendar-stats {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-top: 40px;
+    flex-wrap: wrap;
+    position: relative;
+    z-index: 1;
+}
+
+.food-stat-item {
+    background: linear-gradient(135deg, #ff6b9d 0%, #ff8c00 100%);
+    border-radius: 15px;
+    padding: 20px 25px;
+    min-width: 120px;
+    box-shadow: 0 8px 25px rgba(255, 140, 0, 0.3);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.food-stat-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    display: block;
+    margin-bottom: 5px;
+}
+
+.food-stat-label {
+    font-family: 'Dancing Script', cursive;
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Yemek takvimi responsive stilleri */
+@media (max-width: 768px) {
+    .food-calendar-widget {
+        padding: 30px 20px;
+        margin: 0 15px;
+    }
+
+    .food-calendar-title {
+        font-size: 2.5rem;
+    }
+
+    .food-calendar-icon {
+        font-size: 3rem;
+    }
+
+    .food-calendar-grid {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 15px;
+    }
+
+    .food-calendar-item {
+        padding: 15px 10px;
+    }
+
+    .food-calendar-stats {
+        gap: 20px;
+    }
+
+    .food-stat-item {
+        min-width: 100px;
+        padding: 15px 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .food-calendar-widget {
+        padding: 20px 15px;
+        margin: 0 10px;
+    }
+
+    .food-calendar-title {
+        font-size: 2rem;
+    }
+
+    .food-calendar-subtitle {
+        font-size: 1rem;
+    }
+
+    .food-calendar-icon {
+        font-size: 2.5rem;
+    }
+
+    .food-calendar-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+
+    .food-calendar-item {
+        padding: 12px 8px;
+    }
+
+    .food-letter {
+        font-size: 1.5rem !important;
+    }
+
+    .food-name {
+        font-size: 1rem !important;
+    }
+
+    .food-description {
+        font-size: 0.8rem !important;
+    }
+
+    .food-calendar-stats {
+        gap: 15px;
+    }
+
+    .food-stat-item {
+        min-width: 80px;
+        padding: 12px 15px;
+    }
+
+    .food-stat-number {
+        font-size: 1.5rem;
+    }
+
+    .food-stat-label {
+        font-size: 0.9rem;
+    }
 }
