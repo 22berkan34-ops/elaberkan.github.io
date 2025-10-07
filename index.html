@@ -329,9 +329,35 @@
                 </div>
             </div>
         </div>
-    </section>
+    <!-- Alfabetik Yemek Yeme Takvimi -->
+    <section class="food-calendar-section">
+        <div class="food-calendar-widget">
+            <div class="food-calendar-header">
+                <div class="food-calendar-icon">🍽️</div>
+                <h2 class="food-calendar-title">Alfabetik Yemek Yeme Takvimi</h2>
+                <p class="food-calendar-subtitle">Yenilenlere kalp, kalanlara boşluk</p>
+            </div>
 
-    <!-- Tam Ekran Modal -->
+            <div class="food-calendar-grid" id="foodCalendarGrid">
+                <!-- Takvim içeriği JavaScript ile doldurulacak -->
+            </div>
+
+            <div class="food-calendar-stats">
+                <div class="food-stat-item">
+                    <span class="food-stat-number" id="foodCompletedCount">0</span>
+                    <span class="food-stat-label">Yenildi</span>
+                </div>
+                <div class="food-stat-item">
+                    <span class="food-stat-number" id="foodPendingCount">0</span>
+                    <span class="food-stat-label">Kaldı</span>
+                </div>
+                <div class="food-stat-item">
+                    <span class="food-stat-number" id="foodTotalCount">0</span>
+                    <span class="food-stat-label">Toplam</span>
+                </div>
+            </div>
+        </div>
+    </section>
     <div id="fullscreenModal" class="fullscreen-modal">
         <div class="modal-content">
             <span class="close-modal" id="closeModal">&times;</span>
