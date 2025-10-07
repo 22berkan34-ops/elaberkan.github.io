@@ -1208,7 +1208,7 @@ class AlphabeticalFoodCalendar {
             { letter: 'E', name: 'Ekler', description: 'Ekler', image: '' },
             { letter: 'F', name: 'Fıstıklı Baklava ', description: 'Antep fıstığı baklava', image: '' },
             { letter: 'G', name: 'Gözleme', description: 'Gözleme', image: '' },
-            { letter: 'H', name: 'Hamburger', description: ' hamburger', image: './12.jpg' },
+            { letter: 'H', name: 'Hamburger', description: ' hamburger', image: '.\12.jpg' },
             { letter: 'I', name: 'Izgara Köfte', description: 'Izgara Köfte', image: '' },
             { letter: 'K', name: 'Kokoreç', description: 'Kokoreç', image: '' },
             { letter: 'L', name: 'Lahmacun', description: ' lahmacun', image: '' },
