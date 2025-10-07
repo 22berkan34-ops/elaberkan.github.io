@@ -1149,6 +1149,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const scrollAnimations = new ScrollAnimations();
     const treasureBox = new TreasureBox();
     const alphabeticalDateCalendar = new AlphabeticalDateCalendar();
+    const alphabeticalFoodCalendar = new AlphabeticalFoodCalendar();
     
     // Global referanslar için
     window.quotesSlider = quotesSlider;
@@ -1168,3 +1169,212 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 });
+// Alfabetik Yemek Yeme Takvimi Sınıfı
+class AlphabeticalFoodCalendar {
+    constructor() {
+        this.foodItems = this.generateFoodItems();
+        this.completedFoods = JSON.parse(localStorage.getItem('completedFoods')) || {};
+
+        this.foodCalendarGrid = document.getElementById('foodCalendarGrid');
+        this.foodCompletedCountElement = document.getElementById('foodCompletedCount');
+        this.foodPendingCountElement = document.getElementById('foodPendingCount');
+        this.foodTotalCountElement = document.getElementById('foodTotalCount');
+
+        // Elementlerin varlığını kontrol et
+        if (!this.foodCalendarGrid) {
+            console.error('foodCalendarGrid elementi bulunamadı');
+            return;
+        }
+
+        this.init();
+    }
+
+    init() {
+        this.renderCalendar();
+        this.updateStats();
+        this.addEventListeners();
+    }
+
+    generateFoodItems() {
+        const foods = [];
+
+        // Türkçe alfabetik yemek listesi
+        const foodList = [
+            { letter: 'A', name: 'Adana Kebap', description: 'Acılı Adana kebap', image: '' },
+            { letter: 'B', name: 'Börek', description: 'Börek', image: '' },
+            { letter: 'C', name: 'Cips', description: 'Cips', image: '' },
+            { letter: 'Ç', name: 'Çiğköfte', description: 'Çiğköfte', image: '' },
+            { letter: 'D', name: 'Döner', description: 'Et döner', image: '' },
+            { letter: 'E', name: 'Ekler', description: 'Ekler', image: '' },
+            { letter: 'F', name: 'Fıstıklı Baklava ', description: 'Antep fıstığı baklava', image: '' },
+            { letter: 'G', name: 'Gözleme', description: 'Gözleme', image: '' },
+            { letter: 'H', name: 'Hamburger', description: ' hamburger', image: './12.jpg' },
+            { letter: 'I', name: 'Izgara Köfte', description: 'Izgara Köfte', image: '' },
+            { letter: 'K', name: 'Kokoreç', description: 'Kokoreç', image: '' },
+            { letter: 'L', name: 'Lahmacun', description: ' lahmacun', image: '' },
+            { letter: 'M', name: 'Mercimek Çorbası', description: ' Mercimek çorbası', image: '' },
+            { letter: 'N', name: 'Nohut', description: 'Nohutlu pilav', image: '' },
+            { letter: 'O', name: 'Omlet', description: 'Omlet', image: '' },
+            { letter: 'P', name: 'Pizza', description: 'Pizza', image: '' },
+            { letter: 'R', name: 'Ramazan Pidesi', description: 'Ramazan pidesi', image: '' },
+            { letter: 'S', name: 'Sufle', description: 'Sufle', image: '' },
+            { letter: 'T', name: 'Tavuk Şiş', description: 'Tavuk şiş', image: '' },
+            { letter: 'U', name: 'Un Kurabiyesi', description: 'Un kurabiyesi', image: '' },
+            { letter: 'V', name: 'Vanilyalı Muhallebi', description: 'Vanilyalı muhallebi', image: '' },
+            { letter: 'Y', name: 'Yoğurtlu Mantı', description: 'Yoğurtlu mantı', image: '' },
+            { letter: 'W', name: 'Waffle', description: 'Waffle', image: '' },
+            { letter: 'Z', name: 'Zeytinyağlı Yaprak Sarma', description: 'Zeytinyağlı yaprak sarma', image: '' }
+        ];
+
+        foodList.forEach((food, index) => {
+            foods.push({
+                letter: food.letter,
+                name: food.name,
+                description: food.description,
+                image: food.image,
+                id: `food-${food.letter}`,
+                order: index
+            });
+        });
+
+        return foods;
+    }
+
+    renderCalendar() {
+        if (this.foodCalendarGrid) {
+            this.foodCalendarGrid.innerHTML = '';
+
+            this.foodItems.forEach(foodItem => {
+                const foodElement = this.createFoodElement(foodItem);
+                this.foodCalendarGrid.appendChild(foodElement);
+            });
+        }
+    }
+
+    createFoodElement(foodObj) {
+        const foodDiv = document.createElement('div');
+        foodDiv.className = 'food-calendar-item';
+        foodDiv.dataset.foodId = foodObj.id;
+
+        const isCompleted = this.completedFoods[foodObj.id];
+        if (isCompleted) {
+            foodDiv.classList.add('completed');
+        }
+
+        foodDiv.innerHTML = `
+            <div class="food-letter">Harf ${foodObj.letter}</div>
+            <div class="food-status">${isCompleted ? '❤️' : '♡'}</div>
+            <div class="food-name">${foodObj.name}</div>
+            <div class="food-description">${foodObj.description}</div>
+        `;
+
+        foodDiv.addEventListener('click', () => {
+            if (isCompleted) {
+                // Tamamlanmış yemeğe tıklandığında resim göster
+                this.showFoodImage(foodObj);
+            } else {
+                // Tamamlanmamış yemeği tamamla
+                this.toggleFoodCompletion(foodObj.id);
+            }
+        });
+
+        return foodDiv;
+    }
+
+    toggleFoodCompletion(foodId) {
+        this.completedFoods[foodId] = !this.completedFoods[foodId];
+
+        // LocalStorage'a kaydet
+        localStorage.setItem('completedFoods', JSON.stringify(this.completedFoods));
+
+        // Takvimi yeniden render et
+        this.renderCalendar();
+        this.updateStats();
+
+        // Animasyon için kalp oluştur
+        if (this.completedFoods[foodId]) {
+            this.createCelebrationHearts(5);
+        }
+    }
+
+    showFoodImage(foodObj) {
+        // Yemek resmini modal'da göster (mevcut modal sistemini kullan)
+        if (window.fullscreenModal) {
+            // Geçici olarak mevcut modal'ı kullan (gerçek resim dosyası yoksa emoji göster)
+            const modal = document.getElementById('fullscreenModal');
+            const modalImage = document.getElementById('modalImage');
+
+            if (modal && modalImage) {
+                // Gerçek resim yoksa emoji göster
+                modalImage.src = `data:image/svg+xml;charset=UTF-8,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Ctext y="50" font-size="50" text-anchor="middle" dominant-baseline="middle"%3E🍽️%3C/text%3E%3C/svg%3E`;
+                modalImage.alt = `${foodObj.name} - ${foodObj.description}`;
+
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+
+                // Modal açıldığında uçuşan kalpler oluştur
+                for (let i = 0; i < 5; i++) {
+                    setTimeout(() => {
+                        createFloatingHeart();
+                    }, i * 100);
+                }
+            }
+        }
+    }
+
+    createCelebrationHearts(count) {
+        for (let i = 0; i < count; i++) {
+            setTimeout(() => {
+                createFloatingHeart();
+            }, i * 100);
+        }
+    }
+
+    updateStats() {
+        const totalFoods = this.foodItems.length;
+        const completedFoods = Object.keys(this.completedFoods).filter(key => this.completedFoods[key]).length;
+        const pendingFoods = totalFoods - completedFoods;
+
+        // Elementlerin varlığını kontrol et
+        if (this.foodCompletedCountElement) {
+            this.foodCompletedCountElement.textContent = completedFoods;
+            this.animateNumber(this.foodCompletedCountElement, completedFoods);
+        }
+
+        if (this.foodPendingCountElement) {
+            this.foodPendingCountElement.textContent = pendingFoods;
+            this.animateNumber(this.foodPendingCountElement, pendingFoods);
+        }
+
+        if (this.foodTotalCountElement) {
+            this.foodTotalCountElement.textContent = totalFoods;
+            this.animateNumber(this.foodTotalCountElement, totalFoods);
+        }
+    }
+
+    animateNumber(element, targetNumber) {
+        if (!element) return;
+
+        const currentNumber = parseInt(element.textContent) || 0;
+        const increment = targetNumber > currentNumber ? 1 : -1;
+        const steps = Math.abs(targetNumber - currentNumber);
+
+        if (steps === 0) return;
+
+        let step = 0;
+        const timer = setInterval(() => {
+            step++;
+            const newNumber = currentNumber + (increment * step);
+            element.textContent = newNumber;
+
+            if (step >= steps) {
+                clearInterval(timer);
+                element.textContent = targetNumber;
+            }
+        }, 50);
+    }
+
+    addEventListeners() {
+        // Özel event listener'lar gerekli değil, click olayları createFoodElement içinde handle ediliyor
+    }
+}
