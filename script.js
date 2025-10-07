@@ -1208,7 +1208,7 @@ class AlphabeticalFoodCalendar {
             { letter: 'E', name: 'Ekler', description: 'Ekler', image: '' },
             { letter: 'F', name: 'Fıstıklı Baklava ', description: 'Antep fıstığı baklava', image: '' },
             { letter: 'G', name: 'Gözleme', description: 'Gözleme', image: '' },
-            { letter: 'H', name: 'Hamburger', description: ' hamburger', image: '.\12.jpg' },
+            { letter: 'H', name: 'Hamburger', description: 'hamburger', image: './img/aşk1.jpg' },
             { letter: 'I', name: 'Izgara Köfte', description: 'Izgara Köfte', image: '' },
             { letter: 'K', name: 'Kokoreç', description: 'Kokoreç', image: '' },
             { letter: 'L', name: 'Lahmacun', description: ' lahmacun', image: '' },
@@ -1269,12 +1269,17 @@ class AlphabeticalFoodCalendar {
         `;
 
         foodDiv.addEventListener('click', () => {
-            if (isCompleted) {
-                // Tamamlanmış yemeğe tıklandığında resim göster
+            // Eğer bu yemek için bir resim yolu tanımlıysa, doğrudan resmi aç
+            if (foodObj.image && foodObj.image.trim() !== '') {
                 this.showFoodImage(foodObj);
-            } else {
-                // Tamamlanmamış yemeği tamamla
+                return;
+            }
+
+            // Aksi halde önce/sonra tamamlandı durumunu değiştir
+            if (!isCompleted) {
                 this.toggleFoodCompletion(foodObj.id);
+            } else {
+                this.showFoodImage(foodObj);
             }
         });
 
@@ -1305,8 +1310,14 @@ class AlphabeticalFoodCalendar {
             const modalImage = document.getElementById('modalImage');
 
             if (modal && modalImage) {
-                // Gerçek resim yoksa emoji göster
-                modalImage.src = `data:image/svg+xml;charset=UTF-8,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Ctext y="50" font-size="50" text-anchor="middle" dominant-baseline="middle"%3E🍽️%3C/text%3E%3C/svg%3E`;
+                // Resim yolu verilmişse onu kullan, yoksa emoji göster
+                if (foodObj.image && foodObj.image.trim() !== '') {
+                    // Web yollarında ileri eğik çizgi kullanılması daha güvenlidir
+                    const src = foodObj.image.replace(/\\/g, '/');
+                    modalImage.src = src;
+                } else {
+                    modalImage.src = `data:image/svg+xml;charset=UTF-8,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Ctext y="50" font-size="50" text-anchor="middle" dominant-baseline="middle"%3E🍽️%3C/text%3E%3C/svg%3E`;
+                }
                 modalImage.alt = `${foodObj.name} - ${foodObj.description}`;
 
                 modal.classList.add('active');
