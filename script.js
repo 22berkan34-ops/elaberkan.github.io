@@ -1218,7 +1218,7 @@ class AlphabeticalFoodCalendar {
         // Türkçe alfabetik yemek listesi
         const foodList = [
             { letter: 'A', name: 'Adana Kebap', description: 'Acılı Adana kebap', image: '' },
-            { letter: 'B', name: 'Börek', description: 'Börek', image: '' },
+            { letter: 'B', name: 'Brownie', description: 'Brownie', image: './resim.jpg' },
             { letter: 'C', name: 'Cips', description: 'Cips', image: '' },
             { letter: 'Ç', name: 'Çiğköfte', description: 'Çiğköfte', image: '' },
             { letter: 'D', name: 'Döner', description: 'Et döner', image: '' },
