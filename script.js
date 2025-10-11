@@ -24,6 +24,22 @@ function createFloatingHeart() {
     }, 8000);
 }
 
+function showLoveBalloonOverlay() {
+    const overlay = document.getElementById('loveBalloonOverlay');
+    if (!overlay) return;
+    overlay.classList.add('show');
+    overlay.setAttribute('aria-hidden', 'false');
+    for (let i = 0; i < 5; i++) {
+        setTimeout(() => { createFloatingHeart(); }, i * 120);
+    }
+    setTimeout(() => {
+        overlay.classList.add('hide');
+    }, 2400);
+    setTimeout(() => {
+        if (overlay && overlay.parentNode) overlay.parentNode.removeChild(overlay);
+    }, 3000);
+}
+
 // Belirli aralıklarla uçuşan kalpler oluştur
 setInterval(createFloatingHeart, 800);
 
@@ -1156,6 +1172,7 @@ document.addEventListener('DOMContentLoaded', () => {
     window.fullscreenModal = fullscreenModal;
     window.loveCounter = loveCounter;
     window.dailyQuote = dailyQuote;
+    showLoveBalloonOverlay();
     
     // Galeri hover efektleri
     const galleryItems = document.querySelectorAll('.gallery-item');
