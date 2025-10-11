@@ -4,6 +4,46 @@
     box-sizing: border-box;
 }
 
+/* Aşkın Gözleri Bölümü */
+.love-eyes-section {
+    position: relative;
+    min-height: 80vh;
+    width: 100%;
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+}
+
+.love-eyes-section::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.45) 60%, rgba(0,0,0,0.35) 100%);
+}
+
+.love-eyes-content {
+    position: relative;
+    text-align: center;
+    padding: 60px 20px;
+}
+
+.love-eyes-section .section-title {
+    color: #fff;
+    text-shadow: 0 4px 14px rgba(0,0,0,0.5);
+}
+
+@media (max-width: 768px) {
+    .love-eyes-section {
+        min-height: 60vh;
+        background-attachment: scroll;
+    }
+}
+
 body {
     font-family: 'Playfair Display', serif;
     background: linear-gradient(135deg, #ffeef8 0%, #ffccd5 50%, #ffb3c1 100%);
